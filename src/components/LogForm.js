@@ -20,9 +20,10 @@ function LogForm(props) {
   
       setWeight('');
     }
+    
     return(
         <form onSubmit={sendMessage}>
-            <input value={weight} onChange={(e) => setWeight(e.target.value)} placeholder="Weight (kg)" />
+            <input type="number" value={weight} onChange={(e) => setWeight(e.target.value)} placeholder="Weight (kg)" />
             <button type="submit" disabled={!weight}>⚖️</button>
         </form>
     )

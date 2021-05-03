@@ -40,9 +40,9 @@ function App() {
   return (
     <div className="App">
       <header>
-        <button className="header">Settings</button>
+        <button className="hidden" />
         <h1>💪</h1>
-        {user ? <SignOutButton auth={auth} /> : <button className="header" style={{visibility: "hidden"}}></button>}
+        {user ? <SignOutButton auth={auth} /> : <button className="hidden" />}
       </header>
 
       <section>
