@@ -5,7 +5,7 @@ import signOutIcon from '../assets/logout.svg';
 function SignOutButton(props) {
     return props.auth.currentUser && (
       <button className="sign-out" onClick={() => props.auth.signOut()} >
-        <img src={signOutIcon} />
+        <img src={signOutIcon} alt="Sign Out"/>
       </button>
     )
 }

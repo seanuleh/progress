@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React from 'react';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 import ProgressLogItem from '../components/ProgressLogItem';
 import LogForm from '../components/LogForm';
