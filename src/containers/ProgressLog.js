@@ -5,8 +5,12 @@ import LogForm from '../components/LogForm';
 
 
 function ProgressLog(props) {
+  const uid = props.auth.currentUser.uid;
   const progLogsRef = props.firestore.collection('progress-logs');
-  const query = progLogsRef.orderBy('createdAt', 'desc').limit(25);
+  const query = progLogsRef
+        .where("uid", "==", uid)
+        .orderBy('createdAt', 'desc')
+        .limit(25);
   const [progLogs] = useCollectionData(query, { idField: 'id' });
 
     return (<>
