@@ -26,7 +26,7 @@ function ProgressAppBar() {
     const { auth } = useContext(AuthContext);
 
     return (
-        <AppBar position="static">
+        <AppBar position="fixed">
             <Toolbar>
                 <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
                 <MenuIcon />

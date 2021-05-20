@@ -11,7 +11,7 @@ import ItemForm from './ItemForm';
 
 const useStyles = makeStyles((theme) => ({
     fab: {
-        position: 'absolute',
+        position: 'fixed',
         bottom: theme.spacing(2),
         right: theme.spacing(2),
     },
@@ -43,31 +43,18 @@ function AddItem() {
         exit: theme.transitions.duration.leavingScreen,
     };
 
-    const fabs = [
+    const fab = 
         {
             color: 'primary',
             className: classes.fab,
             icon: <AddIcon />,
             label: 'Add',
-        },
-    ];
+        };
 
     return (<>
-        {fabs.map((fab, index) => (
-            <Zoom
-                key={fab.color}
-                in={value === index}
-                timeout={transitionDuration}
-                style={{
-                    transitionDelay: `${value === index ? transitionDuration.exit : 0}ms`,
-                }}
-                unmountOnExit
-            >
-                <Fab aria-label={fab.label} className={fab.className} color={fab.color} onClick={handleClick}>
-                    {fab.icon}
-                </Fab>
-            </Zoom>
-        ))}
+    <Fab aria-label={fab.label} className={fab.className} color={fab.color} onClick={handleClick}>
+        {fab.icon}
+    </Fab>
 
       <Modal
         aria-labelledby="transition-modal-title"

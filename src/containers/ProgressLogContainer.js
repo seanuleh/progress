@@ -15,15 +15,16 @@ const useStyles = makeStyles((theme) => ({
     flexWrap: 'wrap',
     '& > *': {
       margin: theme.spacing(1),
-      // width: theme.spacing(16),
-      // height: theme.spacing(16),
+      marginTop: theme.spacing(8)
     },
   },
-  fab: {
-    position: 'absolute',
-    bottom: theme.spacing(2),
-    right: theme.spacing(2),
-  },
+  gridRoot: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    '& > *': {
+      margin: theme.spacing(1),
+    },
+  }
 }));
 
 function ProgressLogContainer() {
@@ -44,7 +45,7 @@ function ProgressLogContainer() {
       <div className={classes.root}>
         <Grid
           container
-          className={classes.root}
+          className={classes.gridRoot}
           direction="column"
           justify="center"
           alignItems="center"
