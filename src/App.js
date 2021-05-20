@@ -39,7 +39,6 @@ export const AuthContext = React.createContext();
 
 // const analytics = firebase.analytics();
 
-
 function App() {
   const [user] = useAuthState(auth);
 

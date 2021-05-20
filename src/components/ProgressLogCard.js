@@ -1,28 +1,38 @@
 import React, { useContext } from 'react';
 import { AuthContext } from '../App';
 
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 
 import CardActions from '@material-ui/core/CardActions';
+import CardActionArea from '@material-ui/core/CardActionArea';
 import Button from '@material-ui/core/Button';
 
-import sillhoutte from '../assets/nopic.jpeg';
-
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import Grid from '@material-ui/core/Grid';
+import Box from '@material-ui/core/Box';
 
 const useStyles = makeStyles((theme) => ({
     root: {
       display: 'flex',
     },
+    cardRoot: {
+        width: '100%',
+        display: 'flex',
+    },
     details: {
       display: 'flex',
+      width: '100%',
       flexDirection: 'column',
     },
     content: {
       flex: '1 0 auto',
+    },
+    actions: {
+      justifyContent: "spa"
     },
     cover: {
       width: 151,
@@ -42,12 +52,12 @@ const useStyles = makeStyles((theme) => ({
 
 function ProgressLogCard(props) {
     const classes = useStyles();
-    const theme = useTheme();
   
     const { firestore } = useContext(AuthContext);
 
     const progLogsRef = firestore.collection('progress-logs');
     const { log } = props;
+    const trackable = log.trackable;
 
     const deleteItem = async () => {  
         await progLogsRef.doc(log.id).delete();
@@ -59,40 +69,45 @@ function ProgressLogCard(props) {
     }
 
     return (
-        <Card className={classes.root}>
-            <CardMedia
-                className={classes.cover}
-                image={sillhoutte}
-                title="Live from space album cover"
-            />
-            <div className={classes.details}>
-                <CardContent className={classes.content}>
-                    <Typography variant="subtitle1" color="textSecondary">
-                        {firestoreDateToString(log.createdAt)}
-                    </Typography>
-                    <Typography variant="subtitle1" color="textPrimary">
-                        {log.weight} <Typography variant="caption" > {log.units} </Typography>
-                    </Typography>
-                </CardContent>
+        <Card className={classes.cardRoot} >
+            <div className={classes.details} width="100%">
+            <CardActionArea>
+                    <CardContent className={classes.content}>
+                        <Typography variant="subtitle1" color="textSecondary">
+                            {firestoreDateToString(log.createdAt)}
+                        </Typography>
+
+                        <List>
+                        {trackable && trackable.map(item => 
+                            <ListItem divider>
+                                <Grid
+                                container
+                                direction="row"
+                                justify="space-between"
+                                alignItems="center"
+                                >
+                                    <Box><Typography variant="button">{item.title}</Typography></Box>
+                                    <Box>
+                                        <Typography variant="subtitle1" color="textPrimary">
+                                            {item.value}
+                                            <Typography variant="caption" > {item.units} </Typography>
+                                        </Typography>
+                                    </Box>
+                                    
+                                </Grid>
+                            </ListItem>
+                        )}
+                        </List>
+                    </CardContent>
+                </CardActionArea>
+                <CardActions alignItems='right'>
+                    <Button size="small" color="primary" onClick={deleteItem}>
+                        Delete
+                    </Button>
+                </CardActions>
             </div>
-            <CardActions>
-        <Button size="small" color="primary">
-          Share
-        </Button>
-        <Button size="small" color="primary">
-          Learn More
-        </Button>
-      </CardActions>
         </Card>
     );
-
-    // return (<>
-    //     <div className={`log-item`}>
-    //         <div className="date">{firestoreDateToString(log.createdAt)}</div>
-    //         <div className="weight"><span className="weight">{log.weight}</span> <span className="units">{log.units}</span></div>
-    //         <div className="delete"><button onClick={() => deleteItem()}>x</button></div>
-    //     </div>
-    // </>)
 }
 
 export default ProgressLogCard;
