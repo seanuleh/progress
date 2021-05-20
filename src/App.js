@@ -10,7 +10,7 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 
 
 
-import ProgressLog from './containers/ProgressLog';
+import ProgressLogContainer from './containers/ProgressLogContainer';
 import SignInButton from './components/SignInButton';
 import SignOutButton from './components/SignOutButton';
 
@@ -31,6 +31,14 @@ if (!firebase.apps.length) {
 
 const auth = firebase.auth();
 const firestore = firebase.firestore();
+
+const authContextInitialState = {
+  auth: auth,
+  firestore: firestore
+}
+
+export const AuthContext = React.createContext();
+
 // const analytics = firebase.analytics();
 
 
@@ -38,17 +46,19 @@ function App() {
   const [user] = useAuthState(auth);
 
   return (
-    <div className="App">
-      <header>
-        <button className="hidden" />
-        <h1>💪</h1>
-        {user ? <SignOutButton auth={auth} /> : <button className="hidden" />}
-      </header>
+    <AuthContext.Provider value={authContextInitialState}>
+      <div className="App">
+        <header>
+          <button className="hidden" />
+          <h1>💪</h1>
+          {user ? <SignOutButton/> : <button className="hidden" />}
+        </header>
 
-      <section>
-        {user ? <ProgressLog auth={auth} firestore={firestore} /> : <SignInButton auth={auth}/>}
-      </section>
-    </div>
+        <section>
+          {user ? <ProgressLogContainer /> : <SignInButton/>}
+        </section>
+      </div>
+    </AuthContext.Provider>
   );
 }
 

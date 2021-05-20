@@ -1,15 +1,18 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import firebase from 'firebase/app';
+import { AuthContext } from '../App';
 
-function LogForm(props) {
-    const progLogsRef = props.firestore.collection('progress-logs');
+function LogForm() {
+    const { auth, firestore } = useContext(AuthContext);
+
+    const progLogsRef = firestore.collection('progress-logs');
     const [weight, setWeight] = useState('');
   
   
     const sendMessage = async (e) => {
       e.preventDefault();
   
-      const { uid } = props.auth.currentUser;
+      const { uid } = auth.currentUser;
   
       await progLogsRef.add({
         weight: weight,

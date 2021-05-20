@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { AuthContext } from '../App';
 
 function ProgressLogItem(props) {
-    const progLogsRef = props.firestore.collection('progress-logs');
+    const { firestore } = useContext(AuthContext);
+
+    const progLogsRef = firestore.collection('progress-logs');
     const { log } = props;
 
     const deleteItem = async () => {  
@@ -20,6 +23,6 @@ function ProgressLogItem(props) {
             <div className="delete"><button onClick={() => deleteItem()}>x</button></div>
         </div>
     </>)
-  }
+}
 
 export default ProgressLogItem;

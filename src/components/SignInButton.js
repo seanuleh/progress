@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import firebase from 'firebase/app';
+import { AuthContext } from '../App';
 
-function SignInButton(props) {
+function SignInButton() {
+    const { auth } = useContext(AuthContext);
 
     const signInWithGoogle = () => {
       const provider = new firebase.auth.GoogleAuthProvider();
-      props.auth.signInWithPopup(provider);
+      auth.signInWithPopup(provider);
     }
   
     return (
