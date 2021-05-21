@@ -36,7 +36,6 @@ const authContextInitialState = {
 }
 
 export const AuthContext = React.createContext();
-
 // const analytics = firebase.analytics();
 
 function App() {

@@ -1,12 +1,21 @@
 import React, { useContext, useState } from 'react';
 import firebase from 'firebase/app';
 import { AuthContext } from '../App';
+import { NewItemModalContext } from './AddItem';
 
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
-import { Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
+import Typography from '@material-ui/core/Typography';
+import { Grid } from '@material-ui/core';
+import Box from '@material-ui/core/Box';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import CardActions from '@material-ui/core/CardActions';
+import CardActionArea from '@material-ui/core/CardActionArea';
+import Button from '@material-ui/core/Button';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import TextField from '@material-ui/core/TextField';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -15,32 +24,44 @@ const useStyles = makeStyles((theme) => ({
       width: '25ch',
     },
   },
+  cardRoot: {
+      maxWidth: '80%',
+      minWidth: '350',
+      display: 'flex',
+  },
+  details: {
+    display: 'flex',
+    width: '100%',
+    flexDirection: 'column',
+  },
+  content: {
+    flex: '1 0 auto',
+    maxWidth: '200',
+  },
+  actions: {
+    justifyContent: "spa"
+  },
+  cover: {
+    width: 151,
+  }
 }));
 
-const initialLogItem = {
-    "title": null,
-    "units": null,
-    "value": null
+const initialTrackable = {
+    "title": "Weight",
+    "units": "kg",
+    "value": 0
 }
 
 function ItemForm() {
     const { auth, firestore } = useContext(AuthContext);
     const classes = useStyles();
-
-    const [numItems, setNumItem] = useState(1);
     const progLogsRef = firestore.collection('progress-logs');
-    const [itemArray, setItemArray] = useState([initialLogItem]);
-  
-    const addItemForm = () => {
-      setItemArray( itemArray => [...itemArray, initialLogItem ])
-      setNumItem(numItems+1)    
-    }
+    const [item, setItem] = useState(initialTrackable);
+    let modalState = useContext(NewItemModalContext);
 
-    const updateItemArray = (value, index, type) => {
-      itemArray[index][type] = value;
-      setItemArray(itemArray);
-
-      console.log("arr: " + JSON.stringify(itemArray));
+    const updateTrackable = (el) => {
+      item.value = el.target.value;
+      setItem(item)
     }
 
     const sendMessage = async (e) => {
@@ -49,48 +70,59 @@ function ItemForm() {
       const { uid } = auth.currentUser;
   
       await progLogsRef.add({
-        trackable: itemArray,
+        trackable: [item],
         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
         uid
       })
+
+      setItem(initialTrackable);
+      modalState.handleClose();
     }
     
     return(
       <>
-        <form onSubmit={sendMessage} className={classes.root} autoComplete="off">
-          <div>
-                  <Grid
-                    direction="column"
-                    justify="center"
-                    alignItems="center"
-                    spacing={5}
-                  >
-            {
-              
-              [...Array(numItems).keys()].map(index => 
-                <>
-                  <Grid
-                    direction="column"
-                    justify="center"
-                    alignItems="center"
-                    spacing={5}
-                  >
-                    <TextField key={'title-'+index} id={'title-'+index} onChange={(e) => updateItemArray(e.target.value, index, "title")} label="Title" type="text" width={1}/>
-                    <TextField key={'units-'+index} id={'units-'+index} onChange={(e) => updateItemArray(e.target.value, index, "units")} label="Units" type="text"/>
-                    <TextField key={'value-'+index} id={'value-'+index} onChange={(e) => updateItemArray(e.target.value, index, "value")} label="Value" type="number"/>
-                  </Grid>
-                </>
-              )
-            }
-            <Button variant="contained" color="primary" disabled={itemArray.length === 0} type="submit" >
-              Submit
-            </Button>
-            <Button variant="contained" color="primary" onClick={addItemForm}>
-              Add Item
-            </Button>
-            </Grid>
+        <Card className={classes.cardRoot} >
+            <div className={classes.details} width="100%">
+            <CardActionArea>
+                    <CardContent className={classes.content}>
+                        <Typography variant="subtitle1" color="textSecondary">
+                            Date
+                        </Typography>
+                        <form onSubmit={sendMessage} className={classes.root} autoComplete="off">
+                        <List>
+                            <ListItem divider>
+                                <Grid
+                                container
+                                direction="row"
+                                justify="space-between"
+                                alignItems="center"
+                                >
+                                    <Box><Typography variant="button">Weight</Typography></Box>
+                                    <Box>
+                                        <Typography variant="subtitle1" color="textPrimary">
+                                        <TextField required
+                                                  key='v' 
+                                                  name="value"
+                                                  onChange={updateTrackable} 
+                                                  variant="filled"
+                                                  label="Value" type="number"/>
+                                                  <Typography variant="caption"> kg </Typography>
+                                        </Typography>
+                                    </Box>
+                                    
+                                </Grid>
+                            </ListItem>
+                        </List>
+                        </form>
+                    </CardContent>
+                </CardActionArea>
+                <CardActions alignItems='right'>
+                    <Button size="small" color="primary" onClick={sendMessage}>
+                        Submit
+                    </Button>
+                </CardActions>
             </div>
-        </form>
+        </Card>
       </>
     )
   }

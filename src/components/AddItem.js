@@ -1,13 +1,13 @@
 import React from 'react';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import Zoom from '@material-ui/core/Zoom';
+import { makeStyles } from '@material-ui/core/styles';
 import Fab from '@material-ui/core/Fab';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
-
 import AddIcon from '@material-ui/icons/Add';
 import ItemForm from './ItemForm';
+
+export const NewItemModalContext = React.createContext();
 
 const useStyles = makeStyles((theme) => ({
     fab: {
@@ -30,18 +30,21 @@ const useStyles = makeStyles((theme) => ({
 
 function AddItem() {
     const classes = useStyles();
-    const theme = useTheme();
-    const [value] = React.useState(0);
     const [open, setOpen] = React.useState(false);
 
-    const handleClick = () => {
-        setOpen(true);
+    const handleOpen = () => {
+      setOpen(true);
     };
 
-    const transitionDuration = {
-        enter: theme.transitions.duration.enteringScreen,
-        exit: theme.transitions.duration.leavingScreen,
-    };
+    const handleClose = () => {
+      setOpen(false)
+    }
+
+    const modalState = {
+      open: open,
+      handleOpen: handleOpen,
+      handleClose: handleClose
+    }
 
     const fab = 
         {
@@ -52,16 +55,16 @@ function AddItem() {
         };
 
     return (<>
-    <Fab aria-label={fab.label} className={fab.className} color={fab.color} onClick={handleClick}>
+    <Fab aria-label={fab.label} className={fab.className} color={fab.color} onClick={handleOpen}>
         {fab.icon}
     </Fab>
-
+    <NewItemModalContext.Provider value={modalState}>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
         className={classes.modal}
         open={open}
-        onClose={() => {setOpen(false)}}
+        onClose={handleClose}
         closeAfterTransition
         BackdropComponent={Backdrop}
         BackdropProps={{
@@ -69,11 +72,10 @@ function AddItem() {
         }}
       >
         <Fade in={open}>
-          <div className={classes.paper}>
             <ItemForm />
-          </div>
         </Fade>
       </Modal>
+    </NewItemModalContext.Provider>
     </>);
 
 }
