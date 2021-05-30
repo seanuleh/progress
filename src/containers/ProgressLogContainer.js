@@ -1,11 +1,37 @@
 import React, { useContext } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+
+
 import { useCollectionData } from 'react-firebase-hooks/firestore';
-import ProgressLogItem from '../components/ProgressLogItem';
-import LogForm from '../components/LogForm';
+import ProgressLogCard from '../components/ProgressLogCard';
 import { AuthContext } from '../App';
 
+import Grid from '@material-ui/core/Grid';
+import AddItem from '../components/AddItem';
+// import { CartesianGrid, Line, LineChart, Tooltip, XAxis } from 'recharts';
+
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    '& > *': {
+      margin: theme.spacing(1),
+      marginTop: theme.spacing(8)
+    },
+  },
+  gridRoot: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    '& > *': {
+      margin: theme.spacing(1),
+    },
+  }
+}));
 
 function ProgressLogContainer() {
+  const classes = useStyles();
+
   const { auth, firestore } = useContext(AuthContext);
   const uid = auth.currentUser.uid;
 
@@ -16,17 +42,25 @@ function ProgressLogContainer() {
         .limit(25);
   const [progLogs] = useCollectionData(query, { idField: 'id' });
 
-    return (<>
-      <main>
-        <div className="log-item-container">
-          {progLogs && progLogs.map(log => 
-                <ProgressLogItem key={log.id} log={log} /> 
-          )}
-        </div>
-      </main>
-  
-      <LogForm />
-    </>)
+    return (
+    <>
+      <div className={classes.root}>
+        <Grid
+          container
+          className={classes.gridRoot}
+          direction="column"
+          justify="center"
+          alignItems="center"
+          spacing={5}
+        >
+            {progLogs && progLogs.map(log => 
+               <ProgressLogCard key={log.id} log={log} />
+            )}
+        </Grid>
+        <AddItem />
+      </div>
+    </>
+    )
 }
 
 export default ProgressLogContainer;

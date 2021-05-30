@@ -8,11 +8,9 @@ import 'firebase/analytics';
 
 import { useAuthState } from 'react-firebase-hooks/auth';
 
-
-
 import ProgressLogContainer from './containers/ProgressLogContainer';
-import SignInButton from './components/SignInButton';
-import SignOutButton from './components/SignOutButton';
+import Container from '@material-ui/core/Container';
+import ProgressAppBar from './components/ProgressAppBar';
 
 
 if (!firebase.apps.length) {
@@ -38,26 +36,17 @@ const authContextInitialState = {
 }
 
 export const AuthContext = React.createContext();
-
 // const analytics = firebase.analytics();
-
 
 function App() {
   const [user] = useAuthState(auth);
 
   return (
     <AuthContext.Provider value={authContextInitialState}>
-      <div className="App">
-        <header>
-          <button className="hidden" />
-          <h1>💪</h1>
-          {user ? <SignOutButton/> : <button className="hidden" />}
-        </header>
-
-        <section>
-          {user ? <ProgressLogContainer /> : <SignInButton/>}
-        </section>
-      </div>
+      <ProgressAppBar />
+      <Container  maxWidth="sm">
+          {user ? <ProgressLogContainer /> : null}
+      </Container>
     </AuthContext.Provider>
   );
 }

@@ -2,6 +2,8 @@ import React, { useContext } from 'react';
 import firebase from 'firebase/app';
 import { AuthContext } from '../App';
 
+import Button from '@material-ui/core/Button';
+
 function SignInButton() {
     const { auth } = useContext(AuthContext);
 
@@ -11,9 +13,7 @@ function SignInButton() {
     }
   
     return (
-      <>
-        <button className="sign-in" onClick={signInWithGoogle}>Sign in with Google</button>
-      </>
+      <Button color="inherit" onClick={signInWithGoogle}>Login</Button>
     )
   
 }

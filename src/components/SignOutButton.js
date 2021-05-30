@@ -1,15 +1,13 @@
 import React, { useContext } from 'react';
 import { AuthContext } from '../App';
-import signOutIcon from '../assets/logout.svg';
 
+import Button from '@material-ui/core/Button';
 
 function SignOutButton() {
     const { auth } = useContext(AuthContext);
 
-    return auth.currentUser && (
-      <button className="sign-out" onClick={() => auth.signOut()} >
-        <img src={signOutIcon} alt="Sign Out"/>
-      </button>
+    return (
+      <Button color="inherit" onClick={() => auth.signOut()}>Log Out</Button>
     )
 }
 
