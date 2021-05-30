@@ -1,12 +1,14 @@
 import React, { useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
+
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 import ProgressLogCard from '../components/ProgressLogCard';
 import { AuthContext } from '../App';
 
 import Grid from '@material-ui/core/Grid';
 import AddItem from '../components/AddItem';
+// import { CartesianGrid, Line, LineChart, Tooltip, XAxis } from 'recharts';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -51,7 +53,9 @@ function ProgressLogContainer() {
           alignItems="center"
           spacing={5}
         >
-            {progLogs && progLogs.map(log => <ProgressLogCard log={log}/>)}
+            {progLogs && progLogs.map(log => 
+               <ProgressLogCard key={log.id} log={log} />
+            )}
         </Grid>
         <AddItem />
       </div>

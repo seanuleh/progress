@@ -69,7 +69,7 @@ function ProgressLogCard(props) {
 
                         <List>
                         {trackable && trackable.map(item => 
-                            <ListItem divider>
+                            <ListItem key={item.title} divider>
                                 <Grid
                                 container
                                 direction="row"
@@ -90,7 +90,7 @@ function ProgressLogCard(props) {
                         </List>
                     </CardContent>
                 </CardActionArea>
-                <CardActions alignItems='right'>
+                <CardActions>
                     <Button size="small" color="primary" onClick={deleteItem}>
                         Delete
                     </Button>

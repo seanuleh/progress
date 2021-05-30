@@ -116,7 +116,7 @@ function ItemForm() {
                         </form>
                     </CardContent>
                 </CardActionArea>
-                <CardActions alignItems='right'>
+                <CardActions>
                     <Button size="small" color="primary" onClick={sendMessage}>
                         Submit
                     </Button>

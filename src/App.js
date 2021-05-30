@@ -44,7 +44,7 @@ function App() {
   return (
     <AuthContext.Provider value={authContextInitialState}>
       <ProgressAppBar />
-      <Container  maxWidth="sm" >
+      <Container  maxWidth="sm">
           {user ? <ProgressLogContainer /> : null}
       </Container>
     </AuthContext.Provider>
